@@ -1,0 +1,71 @@
+version: "3.5"
+
+services:
+  service-test-config:
+    image: nacos/nacos-server:v2.0.3
+    container_name: config-service-test
+    restart: no
+    environment:
+    - MODE=standalone
+    ports:
+    - 8948:8848
+    networks:
+    - aforo255test
+  service-test-event:
+    image: rabbitmq:3.8.13-management
+    container_name: bus-service-test
+    restart: no
+    environment:
+      - RABBITMQ_DEFAULT_USER=aforo255Test
+      - RABBITMQ_DEFAULT_PASS=aforo255Test
+    ports:
+    - 5772:5672
+    - 15772:15672
+    networks:
+    - aforo255test
+  service-test-discovery:
+    image: consul:1.9.10
+    container_name: consul-service-test
+    restart: no
+    ports:
+    - 8600:8500
+    networks:
+    - aforo255test
+  service-test-balancer:
+    image: fabiolb/fabio:1.5.15-go1.15.5
+    container_name: balancer-service-test
+    restart: no
+    environment:
+    - FABIO_REGISTRY_CONSUL_ADDR=consul-service-test:8500
+    ports:
+    - 9898:9998
+    - 9899:9999
+    networks:
+    - aforo255test
+    depends_on:
+    - service-test-discovery
+  service-test-gateway-kong:    
+    image: kong:latest
+    container_name: kong-service-test
+    restart: no
+    volumes:
+      - ./kong.yml:/usr/local/kong/declarative/kong.yml
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8444:8444"
+    networks:
+    - aforo255test
+  
+networks:
+  aforo255test:
+    name: aforo255-test

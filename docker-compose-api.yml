@@ -1,0 +1,38 @@
+version: "3.5"
+services:
+  app-security-test:
+     image: llnandollff90/img-security-test
+     container_name: app-security-test
+     restart: no
+     ports:
+     - 9001:8080
+     networks:
+     - aforo255test
+  app-pay-test:
+     image: llnandollff90/img-pay-test
+     container_name: app-pay-test
+     restart: no
+     ports:
+     - 9003:8080
+     networks:
+     - aforo255test
+  app-invoice-test:
+     image: llnandollff90/img-invoice-test
+     container_name: app-invoice-test
+     restart: no
+     ports:
+     - 9004:8080
+     networks:
+     - aforo255test
+  app-transaction-test:
+     image: llnandollff90/img-transaction-test
+     container_name: app-transaction-test
+     restart: no
+     ports:
+     - 9002:8080
+     networks:
+     - aforo255test
+
+networks:
+  aforo255test:
+     name: aforo255-test  

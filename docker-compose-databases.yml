@@ -1,0 +1,49 @@
+version: "3.5"
+
+services:
+  service-test-sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: db-test-sql
+    restart: no
+    ports:
+    - 1533:1433
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=Aforo#Test2023
+    networks:
+    - aforo255test
+  service-test-postgres:
+    image: postgres:latest
+    container_name: db-test-postgres
+    restart: no
+    environment:
+    - POSTGRES_PASSWORD=Aforo#Test2023
+    ports:
+    - 5532:5432
+    networks:
+    - aforo255test
+  service-test-mysql:
+    image: mysql:latest
+    container_name: db-test-mysql
+    restart: no
+    environment:
+    - MYSQL_ROOT_PASSWORD=Aforo#Test2023
+    ports:
+    - 3406:3306
+    networks:
+    - aforo255test
+  service-test-mongo:
+    image: mongo:latest
+    container_name: db-test-mongo
+    restart: no
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=root
+    - MONGO_INITDB_ROOT_PASSWORD=Aforo#Test2023
+    ports:
+    - 27117:27017
+    networks:
+    - aforo255test
+
+networks:
+  aforo255test:
+    name: aforo255-test

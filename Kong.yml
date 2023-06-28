@@ -1,0 +1,288 @@
+_format_version: "2.1"
+ 
+services:
+#security-local
+  - name: security-service-local
+    url: http://host.docker.internal:5231/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-local
+        paths:
+          - /security-local/ping
+  - name: security-service-2-local
+    url: http://host.docker.internal:5231/api/usuarios
+    routes:
+      - name: listar-local
+        paths:
+          - /security-local/api/usuarios
+  - name: security-service-3-local
+    url: http://host.docker.internal:5231/api/authentication
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: token-local
+        paths:
+          - /security-local/api/authentication
+#security-docker
+  - name: security-service-docker
+    url: http://app-security-test:8080/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping_docker
+        paths:
+          - /security-docker/ping
+  - name: security-service-2-docker
+    url: http://app-security-test:8080/api/usuarios
+    routes:
+      - name: listar_docker
+        paths:
+          - /security-docker/api/usuarios
+  - name: security-service-3-docker
+    url: http://app-security-test:8080/api/authentication
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: token-docker
+        paths:
+          - /security-docker/api/authentication
+#security-balancer
+  - name: security-service-balancer
+    url: http://balancer-service-test:9999/app-security-test/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping_balancer
+        paths:
+          - /security-balancer/ping
+  - name: security-service-2-balancer
+    url: http://balancer-service-test:9999/app-security-test/api/usuarios
+    routes:
+      - name: listar_blancer
+        paths:
+          - /security-balancer/api/usuarios
+  - name: security-service-3--balancer
+    url: http://balancer-service-test:9999/app-security-test/api/authentication
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: token-balancer
+        paths:
+          - /security-balancer/api/authentication
+#pay-local
+  - name: pay-service-local
+    url: http://host.docker.internal:5037/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-2-local
+        paths:
+          - /pay-local/ping
+  - name: pay-service-22-local
+    url: http://host.docker.internal:5037/api/pay/listar
+    routes:
+      - name: register-23-local
+        paths:
+          - /pay-local/api/pay/listar
+  - name: pay-service-33-local
+    url: http://host.docker.internal:5037/api/pay/register
+    routes:
+      - name: register-3-local
+        paths:
+          - /pay-local/api/pay/register
+#pay-docker
+  - name: pay-service-docker
+    url: http://app-pay-test:8080/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-2-docker
+        paths:
+          - /pay-docker/ping
+  - name: pay-service-2-docker
+    url: http://app-pay-test:8080/api/pay/listar
+    routes:
+      - name: listar-2-docker
+        paths:
+          - /pay-docker/api/pay/listar
+  - name: pay-service-3-docker
+    url: http://app-pay-test:8080/api/pay/register
+    routes:
+      - name: register-docker
+        paths:
+          - /pay-docker/api/pay/register
+#pay-balancer
+  - name: pay-service-balancer
+    url: http://balancer-service-test:9999/app-pay-test/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-2-balancer
+        paths:
+          - /pay-balancer/ping
+  - name: pay-service-2-balancer
+    url: http://balancer-service-test:9999/app-pay-test/api/pay
+    routes:
+      - name: listar-2-balancer
+        paths:
+          - /pay-balancer/api/pay
+  - name: pay-service-3-balancer
+    url: http://balancer-service-test:9999/app-pay-test/api/pay/register
+    routes:
+      - name: register-balancer
+        paths:
+          - /pay-balancer/api/pay/register
+#invoice-local
+  - name: invoice-service-local
+    url: http://host.docker.internal:5143/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-3-local
+        paths:
+          - /invoice-local/ping
+  - name: invoice-service-2-local
+    url: http://host.docker.internal:5143/api/invoice
+    routes:
+      - name: listar-3-local
+        paths:
+          - /invoice-local/api/invoice
+#invoice-docker
+  - name: invoice-service-docker
+    url: http://app-invoice-test:8080/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-3-docker
+        paths:
+          - /invoice-docker/ping
+  - name: invoice-service-2-docker
+    url: http://app-invoice-test:8080/api/invoice
+    routes:
+      - name: listar-3-docker
+        paths:
+          - /invoice-docker/api/invoice
+#invoice-balancer
+  - name: invoice-service-balancer
+    url: http://balancer-service-test:9999/app-invoice-test/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-3-balancer
+        paths:
+          - /invoice-balancer/ping
+  - name: invoice-service-2-balancer
+    url: http://balancer-service-test:9999/app-invoice-test/api/invoice
+    routes:
+      - name: listar-3-balancer
+        paths:
+          - /invoice-balancer/api/invoice
+#transaction-local
+  - name: transaction-service-local
+    url: http://host.docker.internal:5076/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-4-local
+        paths:
+          - /transaction-local/ping
+  - name: transaction-service-2-local
+    url: http://host.docker.internal:5076/api/transaction
+    routes:
+      - name: listar-4-local
+        paths:
+          - /transaction-local/api/transaction
+#transaction-docker
+  - name: transaction-service-docker
+    url: http://app-transaction-test:8080/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-4-docker
+        paths:
+          - /transaction-docker/ping
+  - name: transaction-service-2-docker
+    url: http://app-transaction-test:8080/api/transaction
+    routes:
+      - name: listar-4-docker
+        paths:
+          - /transaction-docker/api/transaction
+#transaction-balancer
+  - name: transaction-service-balancer
+    url: http://balancer-service-test:9999/app-transaction-test/ping
+    plugins:
+      - name: jwt
+        config:
+          anonymous: 9ddccc14-6866-584f-a82b-51e47864af89
+    routes:
+      - name: ping-4-balancer
+        paths:
+          - /transaction-balancer/ping
+  - name: transaction-service-2-balancer
+    url: http://balancer-service-test:9999/app-transaction-test/api/transaction/listar
+    routes:
+      - name: listar-4-balancer
+        paths:
+          - /transaction-balancer/api/transaction/listar
+ 
+plugins:
+- name: cors
+  config: 
+    origins:
+    - "*"
+    methods:
+    - GET
+    - POST
+    headers:
+    - "*"
+    exposed_headers:
+    - "*"
+    credentials: true
+    max_age: 3600
+    preflight_continue: false
+
+- name: jwt
+  config: 
+    secret_is_base64: false
+    run_on_preflight: true
+
+consumers:
+  - username: login_aforo255test_issuer
+    custom_id: aforo255test_id
+
+  - username: anonymous_users
+    id : 9ddccc14-6866-584f-a82b-51e47864af89
+
+jwt_secrets:
+  - consumer: login_aforo255test_issuer
+    secret: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789test"
+  - consumer: anonymous_users
